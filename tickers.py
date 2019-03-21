@@ -3,11 +3,10 @@
     py file to extract valid tickers from nasdaq website
 '''
 import requests
-import sys
-import time
+import sys,os
 from iex import Stock
 import lxml.html
-from  lxml import html
+
 
 def save_tickers(n):
     '''
@@ -28,10 +27,12 @@ def save_tickers(n):
     for x in unparsed_ticks:
         total_ticks.append(x[-5:])      #removes tabs
     for x in total_ticks:
-        print(x.strip(),file =fopen)        #prints list of tickers to file tickers.txt
-
-
-
+        sys.stdout = open(os.devnull,"w")   #suppresses stdout 
+        if(check_if_valid(x.strip())):
+            print(x.strip(),file =fopen)        #prints list of tickers to file tickers.txt
+        else:
+            pass
+        sys.stdout = sys.__stdout__
     fopen.close()
 
 def check_if_valid(ticker):
@@ -41,8 +42,7 @@ def check_if_valid(ticker):
         ticker: fetched ticker from NASDAQ website
     '''
     price = Stock(ticker).price()
-    #print(price)
-    if price: #how to know if price function didnt work?
+    if price:
         return True
     else:
         return False
