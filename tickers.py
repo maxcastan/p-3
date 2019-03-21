@@ -17,15 +17,21 @@ def save_tickers(n):
     fopen=open(sys.argv[2],'w+') #open the file in write mode
     page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQrender=download') #saves all url info
     doc = lxml.html.fromstring(page.content)
-    table = doc.xpath('//div[@class = "genTable thin"]')[0]
-    h3 = table.xpath('.//h3')
-    ticks = h3.xpath('.//a[@href]/text()')
+    table = doc.xpath('//div[@class = "genTable thin"]')[0] #grabs first instance of genTable, which stores tickers
+    unparsed_ticks = []
+    for i in range(0,n):
+        h3 = table.xpath('.//h3')[i]    #grabs all h3 headers
+        ticks = h3.xpath('.//a')        #grabs a headers under h3
+        for tick in ticks:
+            unparsed_ticks.append(tick.text_content())      #includes a bunch of tabs?
     total_ticks =[]
-    for tick in ticks:
-        total_ticks.append(ticks.text_content())
-    print(total_ticks)
-    #for i in  range(0,n+1):
-    #    print(ticks[i])
+    for x in unparsed_ticks:
+        total_ticks.append(x[-5:])      #removes tabs
+    for x in total_ticks:
+        print(x.strip(),file =fopen)        #prints list of tickers to file tickers.txt
+
+
+
     fopen.close()
 
 def check_if_valid(ticker):
