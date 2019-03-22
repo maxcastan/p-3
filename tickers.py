@@ -6,6 +6,7 @@ import requests
 import sys,os
 from iex import Stock
 import lxml.html
+import numbers
 
 
 def save_tickers(n):
@@ -22,12 +23,12 @@ def save_tickers(n):
         h3 = table.xpath('.//h3')[i]    #grabs all h3 headers
         ticks = h3.xpath('.//a')        #grabs a headers under h3
         for tick in ticks:
-            unparsed_ticks.append(tick.text_content())      #includes a bunch of tabs?
+            unparsed_ticks.append(tick.text_content())      #includes a bunch of tabs
     total_ticks =[]
     for x in unparsed_ticks:
         total_ticks.append(x[-5:])      #removes tabs
     for x in total_ticks:
-        sys.stdout = open(os.devnull,"w")   #suppresses stdout 
+        sys.stdout = open(os.devnull,"w")   #suppresses stdout
         if(check_if_valid(x.strip())):
             print(x.strip(),file =fopen)        #prints list of tickers to file tickers.txt
         else:
@@ -42,9 +43,10 @@ def check_if_valid(ticker):
         ticker: fetched ticker from NASDAQ website
     '''
     price = Stock(ticker).price()
-    if price:
-        return True
-    else:
+    try:
+        if price:
+            return True
+    except TypeError:
         return False
 
 if __name__ ==  "__main__":
