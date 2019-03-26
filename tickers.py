@@ -16,6 +16,7 @@ def save_tickers(n):
     '''
     fopen=open(sys.argv[2],'w+') #open the file in write mode
     page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQrender=download') #saves all url info
+    #click on 200 per page?
     doc = lxml.html.fromstring(page.content)
     table = doc.xpath('//div[@class = "genTable thin"]')[0] #grabs first instance of genTable, which stores tickers
     unparsed_ticks = []
