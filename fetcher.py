@@ -32,8 +32,6 @@ if __name__ == "__main__":
     outfile = open(sys.argv[3],"w")
     present=datetime.datetime.now()
     stopTime=addSecs(present, int(sys.argv[1]))
-    print(present)
-    print (stopTime)
     print("Time, Ticker, latestPrice, latestVolume, Close, Open, low, high", file=outfile)
     with open(sys.argv[2],"r") as f:
         for tick in f:
