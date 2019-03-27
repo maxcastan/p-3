@@ -13,7 +13,7 @@ def addSecs(tm, secs):
     return date.time()
 
 def update_stock_info(ticker, stop):
-    with open(sys.argv[3], "a") as outfile:
+    #with open(sys.argv[3], "a") as outfile:
         now=datetime.datetime.now()
 
         if(now.time()>stop):
@@ -30,11 +30,14 @@ def update_stock_info(ticker, stop):
         sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
-    outfile = open(sys.argv[3],"w")
+    cwd=os.getcwd()
+    slash="/"
+    path=cwd+slash+sys.argv[3]
+    exists=os.path.isfile(path)
+    outfile=open(sys.argv[3], "a")
+    if not(exists):
+        print("Time, Ticker, latestPrice, latestVolume, Close, Open, low, high", file=outfile)
 
-    #outfile=open(sys.argv[3], "a")
-    print("Time, Ticker, latestPrice, latestVolume, Close, Open, low, high", file=outfile)
-    outfile.close()
     present=datetime.datetime.now()
     stopTime=addSecs(present, int(sys.argv[1]))
 
