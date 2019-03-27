@@ -13,26 +13,31 @@ def addSecs(tm, secs):
     return date.time()
 
 def update_stock_info(ticker, stop):
-    now=datetime.datetime.now()
+    with open(sys.argv[3], "a") as outfile:
+        now=datetime.datetime.now()
 
-    if(now.time()>stop):
-        sys.exit()
-    sys.stdout = open(os.devnull,"w")
-    print(now.strftime("%H:%M"), file=outfile, end=',')
-    print(ticker,file = outfile,end =',')
-    print(Stock(ticker).quote().get('latestPrice'),file =outfile,end=',')
-    print(Stock(ticker).quote().get('latestVolume'),file =outfile,end=',')
-    print(Stock(ticker).quote().get('Close'),file =outfile,end=',')
-    print(Stock(ticker).quote().get('Open'),file =outfile,end=',')
-    print(Stock(ticker).quote().get('low'),file =outfile,end=',')
-    print(Stock(ticker).quote().get('high'),file =outfile)
-    sys.stdout = sys.__stdout__
+        if(now.time()>stop):
+            sys.exit()
+        sys.stdout = open(os.devnull,"w")
+        print(now.strftime("%H:%M"), file=outfile, end=',')
+        print(ticker,file = outfile,end =',')
+        print(Stock(ticker).quote().get('latestPrice'),file =outfile,end=',')
+        print(Stock(ticker).quote().get('latestVolume'),file =outfile,end=',')
+        print(Stock(ticker).quote().get('close'),file =outfile,end=',')
+        print(Stock(ticker).quote().get('open'),file =outfile,end=',')
+        print(Stock(ticker).quote().get('low'),file =outfile,end=',')
+        print(Stock(ticker).quote().get('high'),file =outfile)
+        sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
     outfile = open(sys.argv[3],"w")
+
+    #outfile=open(sys.argv[3], "a")
+    print("Time, Ticker, latestPrice, latestVolume, Close, Open, low, high", file=outfile)
+    outfile.close()
     present=datetime.datetime.now()
     stopTime=addSecs(present, int(sys.argv[1]))
-    print("Time, Ticker, latestPrice, latestVolume, Close, Open, low, high", file=outfile)
+
     with open(sys.argv[2],"r") as f:
         for tick in f:
             update_stock_info(tick.strip(), stopTime)
