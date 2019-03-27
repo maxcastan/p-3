@@ -6,17 +6,14 @@ import requests
 import sys,os
 from iex import Stock
 import lxml.html
-import numbers
-
 
 def save_tickers(n):
     '''
     Args:
         n: number of tickers to print to file
     '''
-    fopen=open(sys.argv[2],'w+') #open the file in write mode
-    page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQrender=download') #saves all url info
-    #click on 200 per page?
+    fopen=open(sys.argv[2],'w+') #open the file in append mode
+    page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ&pagesize=200') #saves all url info
     doc = lxml.html.fromstring(page.content)
     table = doc.xpath('//div[@class = "genTable thin"]')[0] #grabs first instance of genTable, which stores tickers
     unparsed_ticks = []
@@ -33,7 +30,7 @@ def save_tickers(n):
         if(check_if_valid(x.strip())):
             print(x.strip(),file =fopen)        #prints list of tickers to file tickers.txt
         else:
-            pass
+            continue
         sys.stdout = sys.__stdout__
     fopen.close()
 
@@ -43,12 +40,36 @@ def check_if_valid(ticker):
     Args:
         ticker: fetched ticker from NASDAQ website
     '''
-    price = Stock(ticker).price()
     try:
+        price = Stock(ticker).price()
         if price:
             return True
-    except TypeError:
+        else:
+            return False
+    except(Exception,TypeError):
         return False
+
+def next_page(doc):
+    '''
+    code to switch url to next page-not used
+    '''
+    nextpage = doc.xpath('//div[@id="main_content_pagesizelist"]')[0]
+    href = nextpage.xpath('//ul[@class="pager"]/li/a')[0]
+    newurl = href.attrib['href']
+    page =  requests.get(newurl)
+    doc = lxml.html.fromstring(page.content)
+    table = doc.xpath('//div[@class = "genTable thin"]')[0]
+    return table
 
 if __name__ ==  "__main__":
     save_tickers(int(sys.argv[1]))
+
+'''
+#this was another option to "click" the 200 items per page option but it didnt work
+for option in options.xpath('//select/option'):
+    if option.attrib['value']=="50":
+        del option.attrib['selected']
+    if option.attrib['value']=="200":
+        option.attrib['selected']="selected"
+    #print(option.attrib)
+'''
