@@ -17,13 +17,13 @@ def predictor(ticker,infofile,graphfile,col,t):
     df=dataset.loc[dataset[' Ticker']==ticker]
     print(df)
     newCol=' '+col
-    X=df[[newCol]]
-    Y=df['Time'].str.split(':').apply(lambda x: int(x[0])*60+int(x[1]))
+    Y=df[newCol]
+    X=df[df['Time'].str.split(':').apply(lambda x: int(x[0])*60+int(x[1]))]]
 
     print(X)
     print(Y)
 
-    X_train, X_test, y_train, y_test=train_test_split(X, Y, test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test=train_test_split(X, Y, test_size=1/3, random_state=0)
 
     regressor=LinearRegression()
     regressor.fit(X_train, y_train)
