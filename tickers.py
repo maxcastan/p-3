@@ -1,6 +1,7 @@
-#!/usr/bin/env/python3
 '''
+    command to run->python3 tickers.py numtickers tickers.txt
     py file to extract valid tickers from nasdaq website
+    authors: Paulina Scarlata and Max Castaneda
 '''
 import requests
 import sys,os

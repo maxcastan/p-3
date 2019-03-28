@@ -1,7 +1,9 @@
 import sys
 import csv
 import numpy as np
+import pandas as pd
 from datetime import datetime
+from sklearn import datasets, linear_model
 import matplotlib.pyplot as plt
 'exec(%matplotlib inline)'
 
@@ -10,7 +12,9 @@ import matplotlib.pyplot as plt
 def predictor(ticker,infofile,graphfile,col,t):
     times=[]
     value=[]
-    with open(infofile) as csvfile:
+    dataset=np.loadtxt(infofile,delimiter=",")
+    print(dataset)
+    '''with open(infofile) as csvfile:
         csvreader =  csv.reader(csvfile,delimiter=',')
         for row in csvreader:
             if row[1]==ticker:
@@ -19,8 +23,9 @@ def predictor(ticker,infofile,graphfile,col,t):
                     value.append(float(row[2]))
                 else:
                     value.append(float(row[3]))
-    print(value)
-    print(times)
+    '''
+    #print(csvreader.shape)
+    #print(times.shape)
 
 
 

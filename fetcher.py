@@ -1,6 +1,7 @@
 '''
-    python3 fetcher.py time_lim ticker.txt info.csv
+    command to run->python3 fetcher.py time_lim tickers.txt info.csv
     this module updates stock information from a given ticker symbol
+    authors: Paulina Scarlata and Max Castaneda
 
 '''
 import sys,os
@@ -8,12 +9,21 @@ from iex import Stock
 import datetime
 
 def addSecs(tm, secs):
+    '''
+        Args:
+            tm: present times
+            secs: how many second to run
+    '''
     date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
     date=date+datetime.timedelta(seconds=secs)
     return date.time()
 
 def update_stock_info(ticker, stop):
-    #with open(sys.argv[3], "a") as outfile:
+    '''
+        Args:
+            ticker: passed in single tickers
+            stop: return value from addSecs
+    '''
         now=datetime.datetime.now()
 
         if(now.time()>stop):
