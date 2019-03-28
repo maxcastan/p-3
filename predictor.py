@@ -1,6 +1,6 @@
 '''
 The command to run this program is:
-python3 predictor.py ticker info.csv graphfile.png latestPrice/Volume minutes
+python3 predictor.py ticker info.csv graphfile.png latestPrice/Volume time
 
 
 Authors: Max Castaneda and Paulina Scarlata
@@ -21,7 +21,6 @@ import matplotlib.pyplot as plot
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 'exec(%matplotlib inline)'
-
 
 
 def predictor(ticker,infofile,graphfile,col,t):
@@ -59,9 +58,6 @@ def predictor(ticker,infofile,graphfile,col,t):
     plot.ylabel(col)
     plot.xlabel('Time')
     plot.savefig(graphfile)
-
-
-
 
 if __name__ =="__main__":
     predictor(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
