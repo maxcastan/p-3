@@ -24,20 +24,20 @@ def update_stock_info(ticker, stop):
             ticker: passed in single tickers
             stop: return value from addSecs
     '''
-        now=datetime.datetime.now()
+    now=datetime.datetime.now()
 
-        if(now.time()>stop):
-            sys.exit()
-        sys.stdout = open(os.devnull,"w")
-        print(now.strftime("%H:%M"), file=outfile, end=',')
-        print(ticker,file = outfile,end =',')
-        print(Stock(ticker).quote().get('latestPrice'),file =outfile,end=',')
-        print(Stock(ticker).quote().get('latestVolume'),file =outfile,end=',')
-        print(Stock(ticker).quote().get('close'),file =outfile,end=',')
-        print(Stock(ticker).quote().get('open'),file =outfile,end=',')
-        print(Stock(ticker).quote().get('low'),file =outfile,end=',')
-        print(Stock(ticker).quote().get('high'),file =outfile)
-        sys.stdout = sys.__stdout__
+    if(now.time()>stop):
+        sys.exit()
+    sys.stdout = open(os.devnull,"w")
+    print(now.strftime("%H:%M"), file=outfile, end=',')
+    print(ticker,file = outfile,end =',')
+    print(Stock(ticker).quote().get('latestPrice'),file =outfile,end=',')
+    print(Stock(ticker).quote().get('latestVolume'),file =outfile,end=',')
+    print(Stock(ticker).quote().get('close'),file =outfile,end=',')
+    print(Stock(ticker).quote().get('open'),file =outfile,end=',')
+    print(Stock(ticker).quote().get('low'),file =outfile,end=',')
+    print(Stock(ticker).quote().get('high'),file =outfile)
+    sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
     cwd=os.getcwd()

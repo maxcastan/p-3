@@ -8,8 +8,9 @@ Authors: Max Castaneda and Paulina Scarlata
 
 This module takes a ticker name, csv file, a graph filename, a selection of latestPrice/Volume and the next
 t minutes. The module then creates a plot of actual data as well as a plot of predicted data and
-plots the regresssion line onto a graph and exports the graph to the passed filename
+plots the regresssion line onto a graph. It then exports that graph to the passed in filename
 
+The actual data in the graph is purple and the predictions are red
 '''
 import sys
 import csv
@@ -28,12 +29,11 @@ def predictor(ticker,infofile,graphfile,col,t):
     now=datetime.now()
     timeMinutes=int(now.hour)*60+int(now.minute)
     predictTime=timeMinutes+int(t)
+    times=[]
 
-    new=[]
     for x in range(timeMinutes, predictTime):
-        new.append(x)
+        times.append(x)
 
-    print(new)
 
     dataset=pd.read_csv(infofile)
     df=dataset.loc[dataset[' Ticker']==ticker]
@@ -46,7 +46,11 @@ def predictor(ticker,infofile,graphfile,col,t):
 
     regressor=LinearRegression()
     regressor.fit(X_train, y_train)
-    yprediction=regressor.predict(X_test)
+
+
+    for x in range(timeMinutes, predictTime):
+        predict=regressor.predict([[times[x-timeMinutes]]])
+        plot.scatter(x, predict, color='red')
 
 
     plot.scatter(X_train, y_train, color= 'purple')
@@ -55,6 +59,7 @@ def predictor(ticker,infofile,graphfile,col,t):
     plot.ylabel(col)
     plot.xlabel('Time')
     plot.savefig(graphfile)
+
 
 
 
